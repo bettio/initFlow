@@ -25,7 +25,7 @@
 #include <stdlib.h>
 
 #define BASE_PREFIX ""
-#define SYSTEM_START_TARGET_PATH BASE_PREFIX "system/targets/system-start.target/"
+#define SYSTEM_START_TARGET_PATH BASE_PREFIX "system/targets/system-start.target.requires/"
 
 int main(int argc, char **argv, char **envp)
 {
