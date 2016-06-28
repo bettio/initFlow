@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 2.8)
 project(init)
 
 option(BUILD_STATIC "Build static executable." OFF)
