@@ -12,6 +12,8 @@ int main(int argc, char **argv, char **envp)
 {
     printf("\n\ninit 0.1 - Starting system...\n\n");
 
+    EventLoop *loop = event_loop_create_main_loop();
+
     unitmanager *unitman = unitmanager_init();
     if (!unitman) {
         fprintf(stderr, "init: failed to initialize unit manager.\n");
@@ -26,6 +28,5 @@ int main(int argc, char **argv, char **envp)
 
     target_start_all(target);
 
-    EventLoop *loop = event_loop_new();
     return event_loop_run(loop);
 }

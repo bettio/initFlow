@@ -1,6 +1,7 @@
 #include "service.h"
 
 #include "bson.h"
+#include "eventloop.h"
 #include "unitmanager.h"
 
 #include <fcntl.h>
@@ -13,6 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+static void service_process_event(pid_t pid, void *userdata);
 
 typedef struct Service
 {
@@ -69,7 +72,16 @@ int service_start(unit *u)
         }
     } else {
         srv->pid = pid;
+        unit_ref((unit *) srv);
+        event_loop_add_child(pid, service_process_event, srv);
     }
 
     return 0;
+}
+
+static void service_process_event(pid_t pid, void *userdata)
+{
+    Service *srv = (Service *) userdata;
+
+    printf("event has appened for %s (pid: %i)\n", srv->parent_instance.name, pid);
 }
