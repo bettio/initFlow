@@ -35,7 +35,7 @@ static int check_is_unit_filename(const char *filename)
            string_ends_with(filename, ".mount");
 }
 
-void target_append_unit(inittarget *t, unit *u)
+void target_append_unit(inittarget *t, Unit *u)
 {
     t->units[t->units_count] = u;
     t->units_count++;
@@ -62,7 +62,7 @@ inittarget *target_load(unitmanager *um, const char *path)
             char fullpath[256];
             strncpy(fullpath, path, 256);
             strncat(fullpath, entry->d_name, 256);
-            unit *u = unitmanager_loadservice(um, fullpath);
+            Unit *u = unitmanager_loadservice(um, fullpath);
             if (!u) {
                 fprintf(stderr, "skipping unit %s\n", entry->d_name);
                 continue;

@@ -22,7 +22,7 @@
 
 #include "unitmanager.h"
 
-unit *service_new(const char *service_path);
-int service_start(unit *u);
+Unit *service_new(const char *service_path);
+int service_start(Unit *u);
 
 #endif

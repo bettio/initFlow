@@ -38,7 +38,7 @@ static void service_process_event(pid_t pid, void *userdata);
 
 typedef struct Service
 {
-    unit parent_instance;
+    Unit parent_instance;
     const char *exec;
     pid_t pid;
     int exit_status;
@@ -46,7 +46,7 @@ typedef struct Service
     int restart;
 } Service;
 
-unit *service_new(const char *service_path)
+Unit *service_new(const char *service_path)
 {
     Service *new_service = malloc(sizeof(Service));
     if (!new_service) {
@@ -56,7 +56,7 @@ unit *service_new(const char *service_path)
     new_service->exit_status = 0;
     new_service->error_number = 0;
 
-    unit_constructor((unit *) new_service, service_path);
+    unit_constructor((Unit *) new_service, service_path);
     new_service->parent_instance.type = UNIT_TYPE_SERVICE;
 
     unsigned int size;
@@ -79,10 +79,10 @@ unit *service_new(const char *service_path)
 
     value = bson_key_lookup("restart", doc, &type);
     new_service->restart = value && (strcmp(bson_value_to_string(value, NULL), "always") == 0);
-    return (unit *) new_service;
+    return (Unit *) new_service;
 }
 
-int service_start(unit *u)
+int service_start(Unit *u)
 {
     Service *srv = (Service *) u;
 
@@ -99,7 +99,7 @@ int service_start(unit *u)
         }
     } else {
         srv->pid = pid;
-        unit_ref((unit *) srv);
+        unit_ref((Unit *) srv);
         event_loop_add_child(pid, service_process_event, srv);
     }
 
@@ -113,6 +113,6 @@ static void service_process_event(pid_t pid, void *userdata)
 
     if (srv->restart) {
         printf("restarting %s\n", srv->parent_instance.name);
-        service_start((unit *) srv);
+        service_start((Unit *) srv);
     }
 }

@@ -33,10 +33,10 @@ unitmanager *unitmanager_init()
     return malloc(sizeof(unitmanager));
 }
 
-unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_path)
+Unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_path)
 {
     printf("loading unit: %s\n", unit_path);
-    unit *new_unit;
+    Unit *new_unit;
 
     if (string_ends_with(unit_path, ".service")) {
         new_unit = service_new(unit_path);
@@ -51,7 +51,7 @@ unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_path)
     return new_unit;
 }
 
-void unit_start(unit *u)
+void unit_start(Unit *u)
 {
     switch (u->type) {
         case UNIT_TYPE_SERVICE:
@@ -64,17 +64,17 @@ void unit_start(unit *u)
     }
 }
 
-void unit_constructor(unit *u, const char *unit_path)
+void unit_constructor(Unit *u, const char *unit_path)
 {
     u->name = strdup(unit_path);
 }
 
-int unit_ref(unit *u)
+int unit_ref(Unit *u)
 {
 
 }
 
-int unit_unref(unit *u)
+int unit_unref(Unit *u)
 {
 
 }

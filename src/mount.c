@@ -34,20 +34,20 @@
 
 typedef struct Mount
 {
-    unit parent_instance;
+    Unit parent_instance;
     const char *what;
     const char *where;
     const char *type;
 } Mount;
 
-unit *mount_new(const char *mount_path)
+Unit *mount_new(const char *mount_path)
 {
     Mount *new_mount = malloc(sizeof(Mount));
     if (!new_mount) {
         return NULL;
     }
 
-    unit_constructor((unit *) new_mount, mount_path);
+    unit_constructor((Unit *) new_mount, mount_path);
     new_mount->parent_instance.type = UNIT_TYPE_MOUNT;
 
     unsigned int size;
@@ -72,10 +72,10 @@ unit *mount_new(const char *mount_path)
     munmap(doc, size);
     close(fd);
 
-    return (unit *) new_mount;
+    return (Unit *) new_mount;
 }
 
-int mount_start(unit *u)
+int mount_start(Unit *u)
 {
     Mount *mnt = (Mount *) u;
 

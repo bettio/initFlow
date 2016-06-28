@@ -25,7 +25,7 @@
 typedef struct inittarget
 {
     int units_count;
-    unit *units[256];
+    Unit *units[256];
 } inittarget;
 
 inittarget *target_load(unitmanager *um, const char *path);

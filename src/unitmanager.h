@@ -24,26 +24,26 @@
 #define UNIT_TYPE_SERVICE 1
 #define UNIT_TYPE_MOUNT 2
 
-struct unit
+struct Unit
 {
     char *name;
     void *doc;
     int type;
     int fd;
-} typedef unit;
+} typedef Unit;
 
 struct unitmanager
 {
 } typedef unitmanager;
 
 unitmanager *unitmanager_init();
-unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_name);
+Unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_name);
 
 
-void unit_constructor(unit *u, const char *unit_path);
-int unit_ref(unit *u);
-int unit_unref(unit *u);
+void unit_constructor(Unit *u, const char *unit_path);
+int unit_ref(Unit *u);
+int unit_unref(Unit *u);
 
-void unit_start(unit *u);
+void unit_start(Unit *u);
 
 #endif

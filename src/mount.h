@@ -22,7 +22,7 @@
 
 #include "unitmanager.h"
 
-unit *mount_new(const char *mount_new);
-int mount_start(unit *u);
+Unit *mount_new(const char *mount_new);
+int mount_start(Unit *u);
 
 #endif
