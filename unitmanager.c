@@ -1,11 +1,9 @@
 #include "unitmanager.h"
 
 #include "bson.h"
+#include "mount.h"
+#include "service.h"
 #include "utils.h"
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,42 +17,45 @@ unitmanager *unitmanager_init()
 unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_path)
 {
     printf("loading unit: %s\n", unit_path);
-
-    unit *u = malloc(sizeof(unit));
-    if (!u) {
-        return NULL;
-    }
-    u->name = strdup(unit_path);
+    unit *new_unit;
 
     if (string_ends_with(unit_path, ".service")) {
-        u->type = UNIT_TYPE_SERVICE;
+        new_unit = service_new(unit_path);
+
     } else if (string_ends_with(unit_path, ".mount")) {
-        u->type = UNIT_TYPE_MOUNT;
+        new_unit = mount_new(unit_path);
+    }
+    if (!new_unit) {
+        return NULL;
     }
 
-    unsigned int size;
-    u->doc = map_file(unit_path, O_RDONLY | O_CLOEXEC, &u->fd, &size);
-
-    return u;
+    return new_unit;
 }
 
-void start_unit(unit *u)
+void unit_start(unit *u)
 {
     switch (u->type) {
         case UNIT_TYPE_SERVICE:
+            service_start(u);
         break;
 
         case UNIT_TYPE_MOUNT:
+            mount_start(u);
         break;
     }
 }
 
-int ref_unit(unit *u)
+void unit_constructor(unit *u, const char *unit_path)
+{
+    u->name = strdup(unit_path);
+}
+
+int unit_ref(unit *u)
 {
 
 }
 
-int unref_unit(unit *u)
+int unit_unref(unit *u)
 {
 
 }

@@ -1,5 +1,6 @@
 #include "target.h"
 
+#include "unitmanager.h"
 #include "utils.h"
 
 #include <stdio.h>
@@ -43,7 +44,7 @@ inittarget *target_load(unitmanager *um, const char *path)
             strncpy(fullpath, path, 256);
             strncat(fullpath, entry->d_name, 256);
             unit *u = unitmanager_loadservice(um, fullpath);
-            ref_unit(u);
+            unit_ref(u);
             target_append_unit(t, u);
         }
     }
@@ -60,6 +61,6 @@ int target_destroy(inittarget *t)
 void target_start_all(inittarget *t)
 {
     for (int i = 0; i < t->units_count; i++) {
-        printf("starting %s.\n", t->units[i]->name);
+        unit_start(t->units[i]);
     }
 }
