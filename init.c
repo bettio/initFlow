@@ -1,3 +1,4 @@
+#include "eventloop.h"
 #include "unitmanager.h"
 #include "target.h"
 
@@ -23,5 +24,8 @@ int main(int argc, char **argv, char **envp)
         return EXIT_FAILURE;
     }
 
-    return EXIT_SUCCESS;
+    target_start_all(target);
+
+    EventLoop *loop = event_loop_new();
+    return event_loop_run(loop);
 }
