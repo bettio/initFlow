@@ -1,0 +1,4 @@
+{
+    "exec" : "/bin/sh",
+    "restart": "always"
+}
