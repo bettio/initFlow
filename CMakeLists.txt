@@ -7,6 +7,7 @@ set(init_SRCS
     src/init.c
     src/bson.c
     src/eventloop.c
+    src/interface.c
     src/mount.c
     src/unitmanager.c
     src/service.c

@@ -32,6 +32,7 @@
 static int check_is_unit_filename(const char *filename)
 {
     return string_ends_with(filename, ".service") ||
+           string_ends_with(filename, ".interface") ||
            string_ends_with(filename, ".mount");
 }
 

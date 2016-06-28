@@ -17,34 +17,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-#ifndef _UNITMANAGER_H_
-#define _UNITMANAGER_H_
+#ifndef _INTERFACE_H_
+#define _INTERFACE_H_
 
-#define UNIT_TYPE_NULL 0
-#define UNIT_TYPE_SERVICE 1
-#define UNIT_TYPE_MOUNT 2
-#define UNIT_TYPE_INTERFACE 3
+#include "unitmanager.h"
 
-struct Unit
-{
-    char *name;
-    void *doc;
-    int type;
-    int fd;
-} typedef Unit;
-
-struct unitmanager
-{
-} typedef unitmanager;
-
-unitmanager *unitmanager_init();
-Unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_name);
-
-
-void unit_constructor(Unit *u, const char *unit_path);
-int unit_ref(Unit *u);
-int unit_unref(Unit *u);
-
-void unit_start(Unit *u);
+Unit *interface_new(const char *interface_new);
+int interface_start(Unit *u);
 
 #endif

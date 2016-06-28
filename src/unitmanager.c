@@ -20,6 +20,7 @@
 #include "unitmanager.h"
 
 #include "bson.h"
+#include "interface.h"
 #include "mount.h"
 #include "service.h"
 #include "utils.h"
@@ -43,6 +44,9 @@ Unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_path)
 
     } else if (string_ends_with(unit_path, ".mount")) {
         new_unit = mount_new(unit_path);
+
+    } else if (string_ends_with(unit_path, ".interface")) {
+        new_unit = interface_new(unit_path);
     }
     if (!new_unit) {
         return NULL;
@@ -61,6 +65,11 @@ void unit_start(Unit *u)
         case UNIT_TYPE_MOUNT:
             mount_start(u);
         break;
+
+        case UNIT_TYPE_INTERFACE:
+            interface_start(u);
+        break;
+
     }
 }
 
