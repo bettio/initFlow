@@ -66,7 +66,7 @@ void unit_start(Unit *u)
 
 void unit_constructor(Unit *u, const char *unit_path)
 {
-    u->name = strdup(unit_path);
+    u->name = strdup(strrchr(unit_path, '/') + 1);
 }
 
 int unit_ref(Unit *u)
