@@ -24,6 +24,7 @@ typedef struct Service
     pid_t pid;
     int exit_status;
     int error_number;
+    int restart;
 } Service;
 
 unit *service_new(const char *service_path)
@@ -52,6 +53,8 @@ unit *service_new(const char *service_path)
     const void *value = bson_key_lookup("exec", doc, &type);
     new_service->exec = strdup(bson_value_to_string(value, NULL));
 
+    value = bson_key_lookup("restart", doc, &type);
+    new_service->restart = value && (strcmp(bson_value_to_string(value, NULL), "always") == 0);
     return (unit *) new_service;
 }
 
@@ -82,6 +85,10 @@ int service_start(unit *u)
 static void service_process_event(pid_t pid, void *userdata)
 {
     Service *srv = (Service *) userdata;
-
     printf("event has appened for %s (pid: %i)\n", srv->parent_instance.name, pid);
+
+    if (srv->restart) {
+        printf("restarting %s\n", srv->parent_instance.name);
+        service_start((unit *) srv);
+    }
 }
