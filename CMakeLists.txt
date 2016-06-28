@@ -1,5 +1,7 @@
 project(init)
 
+option(BUILD_STATIC "Build static executable." OFF)
+
 set(init_SRCS
     src/init.c
     src/bson.c
@@ -10,5 +12,11 @@ set(init_SRCS
     src/target.c
     src/utils.c
 )
+
+if (BUILD_STATIC)
+SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+SET(BUILD_SHARED_LIBRARIES OFF)
+SET(CMAKE_EXE_LINKER_FLAGS "-static")
+endif ()
 
 add_executable(init ${init_SRCS})
