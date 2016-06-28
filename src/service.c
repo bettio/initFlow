@@ -70,6 +70,11 @@ unit *service_new(const char *service_path)
 
     uint8_t type;
     const void *value = bson_key_lookup("exec", doc, &type);
+    if (!value) {
+        fprintf(stderr, "init: cannot execute %s: missing exec key\n", new_service->parent_instance.name);
+        free(new_service);
+        return NULL;
+    }
     new_service->exec = strdup(bson_value_to_string(value, NULL));
 
     value = bson_key_lookup("restart", doc, &type);

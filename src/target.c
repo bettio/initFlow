@@ -63,6 +63,10 @@ inittarget *target_load(unitmanager *um, const char *path)
             strncpy(fullpath, path, 256);
             strncat(fullpath, entry->d_name, 256);
             unit *u = unitmanager_loadservice(um, fullpath);
+            if (!u) {
+                fprintf(stderr, "skipping unit %s\n", entry->d_name);
+                continue;
+            }
             unit_ref(u);
             target_append_unit(t, u);
         }
