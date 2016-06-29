@@ -39,7 +39,7 @@ int main(int argc, char **argv, char **envp)
         return EXIT_FAILURE;
     }
 
-    inittarget *target = target_load(unitman, SYSTEM_START_TARGET_PATH);
+    Target *target = target_load(unitman, SYSTEM_START_TARGET_PATH);
     if (!target) {
         fprintf(stderr, "init: failed to load target: %s.\n", SYSTEM_START_TARGET_PATH);
         return EXIT_FAILURE;

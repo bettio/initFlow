@@ -29,6 +29,12 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+struct _Target
+{
+    int units_count;
+    Unit *units[256];
+};
+
 static int check_is_unit_filename(const char *filename)
 {
     return string_ends_with(filename, ".service") ||
@@ -37,15 +43,15 @@ static int check_is_unit_filename(const char *filename)
            string_ends_with(filename, ".mount");
 }
 
-void target_append_unit(inittarget *t, Unit *u)
+void target_append_unit(Target *t, Unit *u)
 {
     t->units[t->units_count] = u;
     t->units_count++;
 }
 
-inittarget *target_load(UnitManager *um, const char *path)
+Target *target_load(UnitManager *um, const char *path)
 {
-    inittarget *t = malloc(sizeof(inittarget));
+    Target *t = malloc(sizeof(Target));
     if (!t) {
         return NULL;
     }
@@ -77,13 +83,13 @@ inittarget *target_load(UnitManager *um, const char *path)
     return t;
 }
 
-int target_destroy(inittarget *t)
+int target_destroy(Target *t)
 {
     free(t);
     return 0;
 }
 
-void target_start_all(inittarget *t)
+void target_start_all(Target *t)
 {
     for (int i = 0; i < t->units_count; i++) {
         unit_start(t->units[i]);

@@ -22,14 +22,10 @@
 
 #include "unitmanager.h"
 
-typedef struct inittarget
-{
-    int units_count;
-    Unit *units[256];
-} inittarget;
+struct _Target typedef Target;
 
-inittarget *target_load(UnitManager *um, const char *path);
-int target_destroy(inittarget *t);
-void target_start_all(inittarget *t);
+Target *target_load(UnitManager *um, const char *path);
+int target_destroy(Target *t);
+void target_start_all(Target *t);
 
 #endif
