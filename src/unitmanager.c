@@ -40,7 +40,7 @@ unitmanager *unitmanager_init()
     return malloc(sizeof(unitmanager));
 }
 
-Unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_path)
+Unit *unitmanager_loadunit(unitmanager *unitman, const char *unit_path)
 {
     printf("loading unit: %s\n", unit_path);
     Unit *new_unit;

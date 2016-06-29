@@ -37,7 +37,7 @@ struct Unit
 struct _unitmanager typedef unitmanager;
 
 unitmanager *unitmanager_init();
-Unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_name);
+Unit *unitmanager_loadunit(unitmanager *unitman, const char *unit_name);
 
 
 void unit_constructor(Unit *u, const char *unit_path);
