@@ -79,7 +79,7 @@ int mount_start(Unit *u)
 {
     Mount *mnt = (Mount *) u;
 
-    printf("starting mount %s.\n", u->name);
+    printf("Mounting %s on %s.\n", mnt->what, mnt->where);
     if (mount(mnt->what, mnt->where, mnt->type, 0, NULL) < 0) {
         fprintf(stderr, "init: failed to mount %s on %s: ", mnt->what, mnt->where);
         perror("");
