@@ -12,3 +12,6 @@ initFlow supports the following types of units:
 - mount: a filesystem on a certain device that can be mounted on a target directory
 - interface: a net interface that should be brought up with a certain configuration
 - route: a network route that should be configured
+
+kernel requirements:
+CONFIG_SIGNALFD must be enabled and kernel version must be at least 2.6.27.
