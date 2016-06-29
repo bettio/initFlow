@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(init)
 
 option(BUILD_STATIC "Build static executable." OFF)
+option(BUILD_TESTS "Build tests." OFF)
 
 set(init_SRCS
     src/init.c
@@ -28,3 +29,7 @@ if (BUILD_STATIC)
 endif ()
 
 add_executable(init ${init_SRCS})
+
+if (BUILD_TESTS)
+    add_subdirectory(tests)
+endif ()
