@@ -69,7 +69,7 @@ const char *bson_value_to_string(const void *valuePtr, uint8_t *len)
     uint32_t stringLen = read_uint32(valueBytes);
 
     if (len) {
-        *len = stringLen;
+        *len = stringLen - 1;
     }
 
     return valueBytes + 4;
