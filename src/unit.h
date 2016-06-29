@@ -26,11 +26,18 @@
 #define UNIT_TYPE_INTERFACE 3
 #define UNIT_TYPE_ROUTE 4
 
+#define UNIT_STATUS_INACTIVE 0
+#define UNIT_STATUS_SCHEDULED 1
+#define UNIT_STATUS_RUNNING 2
+#define UNIT_STATUS_TERMINATED 3
+#define UNIT_STATUS_FAILED 4
+
 struct Unit
 {
     char *name;
     void *doc;
     int type;
+    int status;
 } typedef Unit;
 
 void unit_constructor(Unit *u, const char *unit_path);
@@ -38,5 +45,7 @@ void unit_ref(Unit *u);
 void unit_unref(Unit *u);
 
 void unit_start(Unit *u);
+int unit_get_status(const Unit *u);
+void unit_set_status(Unit *u, int status);
 
 #endif

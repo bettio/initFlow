@@ -120,5 +120,7 @@ int route_start(Unit *u)
 
     free(route.rt_dev);
 
+    unit_set_status(u, UNIT_STATUS_RUNNING);
+
     return ioctl_ret;
 }

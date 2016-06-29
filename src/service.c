@@ -98,10 +98,15 @@ int service_start(Unit *u)
             perror("");
             _exit(EXIT_FAILURE);
         }
-    } else {
+    } else if (pid > 0) {
+        unit_set_status(u, UNIT_STATUS_RUNNING);
         srv->pid = pid;
         unit_ref((Unit *) srv);
         event_loop_add_child(pid, service_process_event, srv);
+    } else {
+        fprintf(stderr, "init: cannot fork: %s: ", srv->exec);
+        perror("");
+        unit_set_status(u, UNIT_STATUS_FAILED);
     }
 
     return 0;
@@ -110,6 +115,8 @@ int service_start(Unit *u)
 static void service_process_event(pid_t pid, void *userdata)
 {
     Service *srv = (Service *) userdata;
+
+    unit_set_status((Unit *) srv, UNIT_STATUS_TERMINATED);
 
     if (srv->restart) {
         printf("init: %i has terminated. restarting: %s.\n", pid, srv->parent_instance.name);

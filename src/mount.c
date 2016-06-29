@@ -83,6 +83,7 @@ int mount_start(Unit *u)
     if (mount(mnt->what, mnt->where, mnt->type, 0, NULL) < 0) {
         fprintf(stderr, "init: failed to mount %s on %s: ", mnt->what, mnt->where);
         perror("");
+        unit_set_status(u, UNIT_STATUS_FAILED);
         return -1;
     }
 

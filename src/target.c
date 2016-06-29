@@ -92,6 +92,7 @@ int target_destroy(Target *t)
 void target_start_all(Target *t)
 {
     for (int i = 0; i < t->units_count; i++) {
+        unit_set_status(t->units[i], UNIT_STATUS_SCHEDULED);
         unit_start(t->units[i]);
     }
 }

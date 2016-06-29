@@ -95,18 +95,32 @@ int interface_start(Unit *u)
     if (iface->ipv4_address) {
         if (!inet_pton(0, iface->ipv4_address, &sai.sin_addr.s_addr)) {
             printf("init: %s invalid IPv4 interface address\n", u->name);
+            unit_set_status(u, UNIT_STATUS_FAILED);
             return -1;
         }
         sai.sin_family = PF_INET;
         sai.sin_port = 0;
         memcpy(&ifr.ifr_addr, &sai, sizeof(struct sockaddr));
 
-        ioctl(sockfd, SIOCSIFADDR, &ifr);
-        ioctl(sockfd, SIOCGIFFLAGS, &ifr);
+        if (ioctl(sockfd, SIOCSIFADDR, &ifr) < 0) {
+            unit_set_status(u, UNIT_STATUS_FAILED);
+            perror("init: cannot configure interface: ");
+            return -1;
+        }
+        if (ioctl(sockfd, SIOCGIFFLAGS, &ifr) < 0) {
+            unit_set_status(u, UNIT_STATUS_FAILED);
+            perror("init: cannot configure interface: ");
+            return -1;
+        }
 
         ifr.ifr_flags |= IFF_UP | IFF_RUNNING;
-        ioctl(sockfd, SIOCSIFFLAGS, &ifr);
+        if (ioctl(sockfd, SIOCSIFFLAGS, &ifr) < 0) {
+            unit_set_status(u, UNIT_STATUS_FAILED);
+            perror("init: cannot configure interface: ");
+            return -1;
+        }
     }
+    unit_set_status(u, UNIT_STATUS_RUNNING);
     printf(" [ OK ]\n");
 
     return 0;

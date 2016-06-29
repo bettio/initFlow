@@ -50,6 +50,7 @@ void unit_start(Unit *u)
 void unit_constructor(Unit *u, const char *unit_path)
 {
     u->name = strdup(strrchr(unit_path, '/') + 1);
+    u->status = UNIT_STATUS_INACTIVE;
 }
 
 void unit_ref(Unit *u)
@@ -58,4 +59,14 @@ void unit_ref(Unit *u)
 
 void unit_unref(Unit *u)
 {
+}
+
+int unit_get_status(const Unit *u)
+{
+    return u->status;
+}
+
+void unit_set_status(Unit *u, int status)
+{
+    u->status = status;
 }
