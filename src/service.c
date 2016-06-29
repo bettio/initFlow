@@ -110,7 +110,6 @@ int service_start(Unit *u)
 static void service_process_event(pid_t pid, void *userdata)
 {
     Service *srv = (Service *) userdata;
-    printf("event has appened for %s (pid: %i)\n", srv->parent_instance.name, pid);
 
     if (srv->restart) {
         printf("restarting %s\n", srv->parent_instance.name);
