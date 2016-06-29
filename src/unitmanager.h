@@ -20,29 +20,11 @@
 #ifndef _UNITMANAGER_H_
 #define _UNITMANAGER_H_
 
-#define UNIT_TYPE_NULL 0
-#define UNIT_TYPE_SERVICE 1
-#define UNIT_TYPE_MOUNT 2
-#define UNIT_TYPE_INTERFACE 3
-#define UNIT_TYPE_ROUTE 4
-
-struct Unit
-{
-    char *name;
-    void *doc;
-    int type;
-} typedef Unit;
+#include "unit.h"
 
 struct _UnitManager typedef UnitManager;
 
 UnitManager *unitmanager_init();
 Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_name);
-
-
-void unit_constructor(Unit *u, const char *unit_path);
-void unit_ref(Unit *u);
-void unit_unref(Unit *u);
-
-void unit_start(Unit *u);
 
 #endif

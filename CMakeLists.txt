@@ -13,6 +13,7 @@ set(init_SRCS
     src/route.c
     src/service.c
     src/target.c
+    src/unit.c
     src/utils.c
 )
 

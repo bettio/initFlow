@@ -17,50 +17,26 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-#include "unitmanager.h"
+#ifndef _UNIT_H_
+#define _UNIT_H_
 
-#include "bson.h"
-#include "interface.h"
-#include "mount.h"
-#include "route.h"
-#include "service.h"
-#include "unit.h"
-#include "utils.h"
+#define UNIT_TYPE_NULL 0
+#define UNIT_TYPE_SERVICE 1
+#define UNIT_TYPE_MOUNT 2
+#define UNIT_TYPE_INTERFACE 3
+#define UNIT_TYPE_ROUTE 4
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-struct _UnitManager
+struct Unit
 {
-    Unit *units[256];
-};
+    char *name;
+    void *doc;
+    int type;
+} typedef Unit;
 
-UnitManager *unitmanager_init()
-{
-    return malloc(sizeof(UnitManager));
-}
+void unit_constructor(Unit *u, const char *unit_path);
+void unit_ref(Unit *u);
+void unit_unref(Unit *u);
 
-Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_path)
-{
-    DEBUG_MSG("loading unit: %s\n", unit_path);
-    Unit *new_unit;
+void unit_start(Unit *u);
 
-    if (string_ends_with(unit_path, ".service")) {
-        new_unit = service_new(unit_path);
-
-    } else if (string_ends_with(unit_path, ".mount")) {
-        new_unit = mount_new(unit_path);
-
-    } else if (string_ends_with(unit_path, ".interface")) {
-        new_unit = interface_new(unit_path);
-
-    } else if (string_ends_with(unit_path, ".route")) {
-        new_unit = route_new(unit_path);
-    }
-    if (!new_unit) {
-        return NULL;
-    }
-
-    return new_unit;
-}
+#endif
