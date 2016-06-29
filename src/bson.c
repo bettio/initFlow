@@ -31,6 +31,7 @@
 uint32_t read_uint32(const void *u)
 {
     const char *b = (const char *) u;
+    /* TODO: fix endianess issues here */
     return (b[0] | (b[1] << 8) | (b[2] << 16) | (b[3] << 24));
 }
 
@@ -39,7 +40,7 @@ const void *bson_key_lookup(const char *key, const void *document, uint8_t *type
     const char *docBytes = (const char *) document;
     uint32_t docLen = read_uint32(document);
 
-    //CHECK LEN
+    /* TODO: it would be nice to check len validity here */
 
     unsigned int offset = 4;
     while (offset + 1 < docLen) {
@@ -53,7 +54,7 @@ const void *bson_key_lookup(const char *key, const void *document, uint8_t *type
            return (void *) (docBytes + offset + 1 + keyLen + 1);
        }
 
-       //offset <- type (uint8_t) + key (const char *) + '\0' (char)
+       /* offset <- type (uint8_t) + key (const char *) + '\0' (char) */
        offset += 1 + keyLen + 1;
 
        switch (elementType) {
