@@ -1,0 +1,14 @@
+initFlow is an init daemon for Linux systems written in C and licensed as GPLv2.
+
+initFlow design is similar to systemd design and it borrows some concepts from it.
+First of all every startup unit (service, socket, mount, etc...) is a unit and
+it inherits its properties.
+When system boots, shutdown or restarts an init target is reached. Every target
+requires some units that are installed as symlinks inside the .target.wants
+directory.
+
+initFlow supports the following types of units:
+- service: an executable service that can be launched by initFlow
+- mount: a filesystem on a certain device that can be mounted on a target directory
+- interface: a net interface that should be brought up with a certain configuration
+- route: a network route that should be configured
