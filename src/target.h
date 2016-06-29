@@ -1,3 +1,8 @@
+/**
+ * @file target.h
+ * @brief target management functions.
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -24,8 +29,30 @@
 
 struct _Target typedef Target;
 
+/**
+ * @brief load a target.
+ *
+ * @description load a target and all the associated units.
+ *
+ * @param um the UnitManager.
+ * @param path to the target wants directory.
+ */
 Target *target_load(UnitManager *um, const char *path);
+
+/**
+ * @brief destory a target.
+ *
+ * @description destroy a target and free its allocated memory.
+ */
 int target_destroy(Target *t);
+
+/**
+ * @brief start all target units
+ *
+ * @description start all required units for a certain target.
+ *
+ * @param t target that should be started.
+ */
 void target_start_all(Target *t);
 
 #endif
