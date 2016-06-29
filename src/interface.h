@@ -1,3 +1,8 @@
+/**
+ * @file interface.h
+ * @brief .interface units management functions.
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -22,7 +27,21 @@
 
 #include "unitmanager.h"
 
+/**
+ * @brief instantiate a new Interface unit.
+ *
+ * @description read a .interface unit and instantiate a new Interface object.
+ *
+ */
 Unit *interface_new(const char *interface_new);
+
+/**
+ * @brief start the interface.
+ *
+ * @description start the interface pointed by u.
+ *
+ * @param u the interface that should be started.
+ */
 int interface_start(Unit *u);
 
 #endif
