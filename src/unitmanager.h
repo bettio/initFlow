@@ -31,7 +31,6 @@ struct Unit
     char *name;
     void *doc;
     int type;
-    int fd;
 } typedef Unit;
 
 struct _UnitManager typedef UnitManager;
