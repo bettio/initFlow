@@ -1,3 +1,8 @@
+/**
+ * @file mount.h
+ * @brief .mount units management functions.
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -22,7 +27,21 @@
 
 #include "unitmanager.h"
 
+/**
+ * @brief instantiate a new Mount unit.
+ *
+ * @description read a .mount unit and instantiate a new Mount object.
+ *
+ */
 Unit *mount_new(const char *mount_new);
+
+/**
+ * @brief start the mount.
+ *
+ * @description start the mount pointed by u.
+ *
+ * @param u the mount that should be started.
+ */
 int mount_start(Unit *u);
 
 #endif
