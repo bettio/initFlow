@@ -1,3 +1,8 @@
+/**
+ * @file unitmanager.h
+ * @brief function to manage a set of units
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -24,7 +29,19 @@
 
 struct _UnitManager typedef UnitManager;
 
+/**
+ * @brief initialize unitmanager
+ *
+ * @return newly created UnitManager.
+ */
 UnitManager *unitmanager_init();
+
+/**
+ * @brief load any unit file
+ *
+ * @description load any unit file (.unit, .service, .mount, etc...) and istantiates them by
+   calling the right constructor.
+ */
 Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_name);
 
 #endif
