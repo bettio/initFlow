@@ -1,3 +1,8 @@
+/**
+ * @file unit.h
+ * @brief Unit related functions
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -40,12 +45,38 @@ struct Unit
     int status;
 } typedef Unit;
 
-void unit_constructor(Unit *u, const char *unit_path);
-void unit_ref(Unit *u);
-void unit_unref(Unit *u);
+/**
+ * @brief Unit constructor method.
+ *
+ * @details initialize an already allocated Unit based object.
+ * @param unit the pointer to the uninitialized Unit based object.
+ * @param unit_path the path to the .unit BSON file.
+ */
+void unit_constructor(Unit *unit, const char *unit_path);
 
+/**
+ * @brief increases Unit object reference counter.
+ */
+void unit_ref(Unit *unit);
+
+/**
+ * @brief decreases Unit object reference counter.
+ */
+void unit_unref(Unit *unit);
+
+/**
+ * @brief starts a Unit.
+ */
 void unit_start(Unit *u);
+
+/**
+ * @brief get Unit status.
+ */
 int unit_get_status(const Unit *u);
+
+/**
+ * @brief set Unit status.
+ */
 void unit_set_status(Unit *u, int status);
 
 #endif
