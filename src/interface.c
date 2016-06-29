@@ -65,9 +65,19 @@ Unit *interface_new(const char *interface_path)
 
     uint8_t type;
     const void *value = bson_key_lookup("interface", doc, &type);
+    if (!value) {
+        fprintf(stderr, "init: %s: missing interface name\n", new_interface->parent_instance.name);
+        free(new_interface);
+        return NULL;
+    }
     new_interface->network_interface = strdup(bson_value_to_string(value, NULL));
 
     value = bson_key_lookup("ipv4_address", doc, &type);
+    if (!value) {
+        fprintf(stderr, "init: %s: missing IPv4 address\n", new_interface->parent_instance.name);
+        free(new_interface);
+        return NULL;
+    }
     new_interface->ipv4_address = strdup(bson_value_to_string(value, NULL));
 
     return (Unit *) new_interface;
