@@ -1,0 +1,18 @@
+initFlow has been written in C using C99 standard with GNU extensions.
+C99 standard is supported by all relevant C compilers that targets Linux systems
+(GCC, CLANG, etc...).
+
+Code has been written using a object oriented like paradigm as used in other
+software projects like GLib.
+The following rules must be respected:
+- Class methods must be defined like: classname_method(ClassName *c, ...)
+- Classes must be instantiated by using ClassName *classname_new(...) or by using
+   any other factory method.
+- Classes that allow inheritance must have a classname_constructor(ClassName *c)
+   method that must be used for base class initialization.
+- Objects must be deleted using classname_destroy(ClassName *c) method.
+- Structs forward declaration should be used as often as possible and it must be
+   always used for public headers.
+- d-pointers are mandatory for public ABI classes that are meant to be subclassed
+  by third party applications in order to avoid changes to the in memory object
+  layout.
