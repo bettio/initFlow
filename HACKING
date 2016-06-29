@@ -16,3 +16,9 @@ The following rules must be respected:
 - d-pointers are mandatory for public ABI classes that are meant to be subclassed
   by third party applications in order to avoid changes to the in memory object
   layout.
+
+Some notes about syscalls:
+- Always use O_CLOEXEC flag when opening a new file to avoid fd leaks unless
+  when required to pass a fd to the newly executed process.
+- Use accept4 and similar syscalls with a flags parameter for the same reason as
+  the previous rule.
