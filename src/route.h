@@ -1,3 +1,8 @@
+/**
+ * @file route.h
+ * @brief .route units management functions.
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -22,7 +27,21 @@
 
 #include "unitmanager.h"
 
+/**
+ * @brief instantiate a new Route unit.
+ *
+ * @description read a .route unit and instantiate a new Route object.
+ *
+ */
 Unit *route_new(const char *route_new);
+
+/**
+ * @brief start the route.
+ *
+ * @description start the route pointed by u.
+ *
+ * @param u the route that should be started.
+ */
 int route_start(Unit *u);
 
 #endif
