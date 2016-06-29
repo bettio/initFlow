@@ -95,6 +95,10 @@ int route_start(Unit *u)
 
     struct rtentry route;
     struct sockaddr_in sai;
+
+    memset(&route, 0, sizeof(route));
+    memset(&sai, 0, sizeof(sai));
+
     if (!inet_pton(0, route_unit->destination, &sai.sin_addr.s_addr)) {
         fprintf(stderr, "init: %s invalid destination address\n", u->name);
         return -1;
