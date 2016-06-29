@@ -30,17 +30,17 @@
 #include <stdio.h>
 #include <string.h>
 
-struct _unitmanager
+struct _UnitManager
 {
     Unit *units[256];
 };
 
-unitmanager *unitmanager_init()
+UnitManager *unitmanager_init()
 {
-    return malloc(sizeof(unitmanager));
+    return malloc(sizeof(UnitManager));
 }
 
-Unit *unitmanager_loadunit(unitmanager *unitman, const char *unit_path)
+Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_path)
 {
     printf("loading unit: %s\n", unit_path);
     Unit *new_unit;

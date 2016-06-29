@@ -33,7 +33,7 @@ int main(int argc, char **argv, char **envp)
 
     EventLoop *loop = event_loop_create_main_loop();
 
-    unitmanager *unitman = unitmanager_init();
+    UnitManager *unitman = unitmanager_init();
     if (!unitman) {
         fprintf(stderr, "init: failed to initialize unit manager.\n");
         return EXIT_FAILURE;

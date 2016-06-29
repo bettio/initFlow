@@ -28,7 +28,7 @@ typedef struct inittarget
     Unit *units[256];
 } inittarget;
 
-inittarget *target_load(unitmanager *um, const char *path);
+inittarget *target_load(UnitManager *um, const char *path);
 int target_destroy(inittarget *t);
 void target_start_all(inittarget *t);
 

@@ -34,10 +34,10 @@ struct Unit
     int fd;
 } typedef Unit;
 
-struct _unitmanager typedef unitmanager;
+struct _UnitManager typedef UnitManager;
 
-unitmanager *unitmanager_init();
-Unit *unitmanager_loadunit(unitmanager *unitman, const char *unit_name);
+UnitManager *unitmanager_init();
+Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_name);
 
 
 void unit_constructor(Unit *u, const char *unit_path);

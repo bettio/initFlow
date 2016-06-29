@@ -43,7 +43,7 @@ void target_append_unit(inittarget *t, Unit *u)
     t->units_count++;
 }
 
-inittarget *target_load(unitmanager *um, const char *path)
+inittarget *target_load(UnitManager *um, const char *path)
 {
     inittarget *t = malloc(sizeof(inittarget));
     if (!t) {
