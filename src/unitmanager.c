@@ -30,6 +30,11 @@
 #include <stdio.h>
 #include <string.h>
 
+struct _unitmanager
+{
+    Unit *units[256];
+};
+
 unitmanager *unitmanager_init()
 {
     return malloc(sizeof(unitmanager));
@@ -85,12 +90,10 @@ void unit_constructor(Unit *u, const char *unit_path)
     u->name = strdup(strrchr(unit_path, '/') + 1);
 }
 
-int unit_ref(Unit *u)
+void unit_ref(Unit *u)
 {
-
 }
 
-int unit_unref(Unit *u)
+void unit_unref(Unit *u)
 {
-
 }

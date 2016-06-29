@@ -17,14 +17,39 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-#include "eventloopstructs.h"
 #include "eventloop.h"
 
 #include <sys/types.h>
 #include <sys/wait.h>
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
+
+#define EVENT_TYPE_NONE 0
+#define EVENT_TYPE_CHILD 1
+
+struct _EventLoop
+{
+    void *listeners[256];
+    int listeners_count;
+    int keep_running;
+};
+
+typedef struct EventListener
+{
+    void *userdata;
+    uint8_t type;
+} EventListener;
+
+typedef struct ChildListener
+{
+    EventListener parent_instance;
+
+    event_child_handler_t handler;
+    pid_t pid;
+} ChildListener;
+
 
 static EventLoop *main_event_loop;
 
@@ -48,7 +73,7 @@ int event_loop_run(EventLoop *loop)
                 if (listener->type == EVENT_TYPE_CHILD) {
                     ChildListener *child = (ChildListener *) listener;
                     if (child->pid == pid) {
-                        event_child_handler_t handler = (event_child_handler_t) listener->handler;
+                        event_child_handler_t handler = child->handler;
                         handler(pid, listener->userdata);
                     }
                 }
@@ -73,14 +98,13 @@ void event_loop_quit()
 int event_loop_add_child(pid_t pid, event_child_handler_t handler, void *userdata)
 {
     ChildListener *child_listener = malloc(sizeof(ChildListener));
-    child_listener->pid = pid;
+
     child_listener->parent_instance.type = EVENT_TYPE_CHILD;
     child_listener->parent_instance.userdata = userdata;
-    child_listener->parent_instance.handler = handler;
+    child_listener->pid = pid;
+    child_listener->handler = handler;
 
     event_loop_append_listener(child_listener);
-
-    printf("added handler %p for %i\n", handler, pid);
 
     return 0;
 }

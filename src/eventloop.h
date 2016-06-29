@@ -23,11 +23,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#ifndef HAVE_EVENTLOOP_IMPLEMENTATION
-typedef struct EventLoop
-{
-} EventLoop;
-#endif
+struct _EventLoop typedef EventLoop;
 
 typedef void (*event_child_handler_t)(pid_t pid, void *userdata);
 
