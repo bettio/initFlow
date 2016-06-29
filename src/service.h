@@ -1,3 +1,8 @@
+/**
+ * @file service.h
+ * @brief .service units management functions.
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -22,7 +27,21 @@
 
 #include "unitmanager.h"
 
+/**
+ * @brief instantiate a new Service unit.
+ *
+ * @description read a .service unit and instantiate a new Service object.
+ *
+ */
 Unit *service_new(const char *service_path);
+
+/**
+ * @brief start the service.
+ *
+ * @description start the service pointed by u.
+ *
+ * @param u the service that should be started.
+ */
 int service_start(Unit *u);
 
 #endif
