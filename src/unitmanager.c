@@ -22,6 +22,7 @@
 #include "bson.h"
 #include "interface.h"
 #include "mount.h"
+#include "route.h"
 #include "service.h"
 #include "utils.h"
 
@@ -47,6 +48,9 @@ Unit *unitmanager_loadservice(unitmanager *unitman, const char *unit_path)
 
     } else if (string_ends_with(unit_path, ".interface")) {
         new_unit = interface_new(unit_path);
+
+    } else if (string_ends_with(unit_path, ".route")) {
+        new_unit = route_new(unit_path);
     }
     if (!new_unit) {
         return NULL;
@@ -70,6 +74,9 @@ void unit_start(Unit *u)
             interface_start(u);
         break;
 
+        case UNIT_TYPE_ROUTE:
+            route_start(u);
+        break;
     }
 }
 

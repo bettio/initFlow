@@ -10,6 +10,7 @@ set(init_SRCS
     src/interface.c
     src/mount.c
     src/unitmanager.c
+    src/route.c
     src/service.c
     src/target.c
     src/utils.c
