@@ -42,7 +42,7 @@ UnitManager *unitmanager_init()
 
 Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_path)
 {
-    printf("loading unit: %s\n", unit_path);
+    DEBUG_MSG("loading unit: %s\n", unit_path);
     Unit *new_unit;
 
     if (string_ends_with(unit_path, ".service")) {

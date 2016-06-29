@@ -20,6 +20,16 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
+#ifdef ENABLE_DEBUG_MSGS
+  #if ENABLE_DEBUG_MSGS == 1
+    #define DEBUG_MSG printf
+  #else
+    #define DEBUG_MSG(...)
+  #endif
+#else
+  #define DEBUG_MSG(...)
+#endif
+
 int string_ends_with(const char *string, const char *end);
 void *map_file(const char *name, int flags, int *fileFD, unsigned int *fileSize);
 
