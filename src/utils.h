@@ -21,5 +21,6 @@
 #define _UTILS_H_
 
 int string_ends_with(const char *string, const char *end);
+void *map_file(const char *name, int flags, int *fileFD, unsigned int *fileSize);
 
 #endif

@@ -19,6 +19,12 @@
 
 #include "utils.h"
 
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include <string.h>
 
 int string_ends_with(const char *string, const char *end)
@@ -33,3 +39,22 @@ int string_ends_with(const char *string, const char *end)
     return !strcmp(string + (stringlen - endlen), end);
 }
 
+void *map_file(const char *name, int flags, int *fileFD, unsigned int *fileSize)
+{
+    int fd = open(name, flags);
+    if (fileFD) {
+        *fileFD = fd;
+    }
+    if (fd < 0) {
+        return NULL;
+    }
+
+    struct stat fileStats;
+    fstat(fd, &fileStats);
+
+    if (fileSize) {
+        *fileSize = fileStats.st_size;
+    }
+
+    return mmap(NULL, fileStats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+}

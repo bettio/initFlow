@@ -20,6 +20,7 @@
 #include "interface.h"
 
 #include "bson.h"
+#include "utils.h"
 
 #include <arpa/inet.h>
 #include <fcntl.h>

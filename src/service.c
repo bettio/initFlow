@@ -22,6 +22,7 @@
 #include "bson.h"
 #include "eventloop.h"
 #include "unitmanager.h"
+#include "utils.h"
 
 #include <fcntl.h>
 #include <sys/mount.h>

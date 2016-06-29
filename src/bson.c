@@ -22,11 +22,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 uint32_t read_uint32(const void *u)
 {
@@ -83,26 +78,6 @@ const char *bson_value_to_string(const void *valuePtr, uint8_t *len)
 int32_t bson_value_to_int32(const void *valuePtr)
 {
     return read_uint32(valuePtr);
-}
-
-void *map_file(const char *name, int flags, int *fileFD, unsigned int *fileSize)
-{
-    int fd = open(name, flags);
-    if (fileFD) {
-        *fileFD = fd;
-    }
-    if (fd < 0) {
-        return NULL;
-    }
-
-    struct stat fileStats;
-    fstat(fd, &fileStats);
-
-    if (fileSize) {
-        *fileSize = fileStats.st_size;
-    }
-
-    return mmap(NULL, fileStats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 }
 
 int bson_check_validity(const void *document, unsigned int fileSize)
