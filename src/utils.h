@@ -1,3 +1,8 @@
+/**
+ * @file utils.h
+ * @brief miscelaneous useful functions.
+ */
+
 /***************************************************************************
  *   Copyright 2016 by Davide Bettio <davide@uninstall.it>                 *
  *                                                                         *
@@ -30,7 +35,30 @@
   #define DEBUG_MSG(...)
 #endif
 
+/**
+ * @brief checks if a string ends with a certain suffix pointed by end parameter.
+ *
+ * @details return 1 if string end matches a certain suffix specified by end parameter.
+ *
+ * @param string that should be checked.
+ * @param suffix that should be matched.
+ * @return 1 if strings ends with end, 0 otherwise.
+ */
 int string_ends_with(const char *string, const char *end);
+
+/**
+ * @brief maps a file to memory.
+ *
+ * @details open a file given its path and it maps it to memory using mmap.
+ * Opened file descriptor and file size will be reported to the caller.
+ *
+ * @param name file path.
+ * @param flags optional flags that they will be passed to mmap.
+ * @param fileFD it will contain the opened file descritor, if not NULL.
+ * @param fileSize it will contain opened file size, if not NULL.
+ *
+ * @return a pointer to the newly allocated memory mapped area.
+ */
 void *map_file(const char *name, int flags, int *fileFD, unsigned int *fileSize);
 
 #endif
