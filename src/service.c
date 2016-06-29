@@ -87,7 +87,7 @@ int service_start(Unit *u)
 {
     Service *srv = (Service *) u;
 
-    printf("starting service %s.\n", u->name);
+    printf("Starting service: %s.\n", u->name);
 
     pid_t pid = fork();
     if (!pid){
@@ -112,7 +112,7 @@ static void service_process_event(pid_t pid, void *userdata)
     Service *srv = (Service *) userdata;
 
     if (srv->restart) {
-        printf("restarting %s\n", srv->parent_instance.name);
+        printf("init: %i has terminated. restarting: %s.\n", pid, srv->parent_instance.name);
         service_start((Unit *) srv);
     }
 }
