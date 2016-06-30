@@ -19,6 +19,8 @@
 
 #include "eventloop.h"
 
+#include "ptrlist.h"
+
 #include <poll.h>
 #include <sys/signalfd.h>
 #include <sys/types.h>
@@ -34,8 +36,7 @@
 
 struct _EventLoop
 {
-    void *listeners[256];
-    int listeners_count;
+    PtrList *listeners;
     int keep_running;
 };
 
@@ -59,7 +60,16 @@ static EventLoop *main_event_loop;
 EventLoop *event_loop_create_main_loop()
 {
     main_event_loop = malloc(sizeof(EventLoop));
-    main_event_loop->listeners_count = 0;
+    if (!main_event_loop) {
+        return NULL;
+    }
+
+    main_event_loop->listeners = ptr_list_new();
+    if (!main_event_loop->listeners) {
+        free(main_event_loop);
+        return NULL;
+    }
+
     return main_event_loop;
 }
 
@@ -104,8 +114,9 @@ int event_loop_run(EventLoop *loop)
 
         pid_t pid = waitpid(-1, &status, 0);
         if (pid > 0) {
-            for (int i = 0; i < main_event_loop->listeners_count; i++) {
-                EventListener *listener = (EventListener *) main_event_loop->listeners[i];
+            int listeners_count = ptr_list_count(main_event_loop->listeners);
+            for (int i = 0; i < listeners_count; i++) {
+                EventListener *listener = (EventListener *) ptr_list_at(main_event_loop->listeners, i);
                 if (listener->type == EVENT_TYPE_CHILD) {
                     ChildListener *child = (ChildListener *) listener;
                     if (child->pid == pid) {
@@ -119,12 +130,6 @@ int event_loop_run(EventLoop *loop)
 #endif
 
     return EXIT_SUCCESS;
-}
-
-void event_loop_append_listener(void *listener)
-{
-    main_event_loop->listeners[main_event_loop->listeners_count] = listener;
-    main_event_loop->listeners_count++;
 }
 
 void event_loop_quit()
@@ -141,7 +146,10 @@ int event_loop_add_child(pid_t pid, event_child_handler_t handler, void *userdat
     child_listener->pid = pid;
     child_listener->handler = handler;
 
-    event_loop_append_listener(child_listener);
+    if (ptr_list_append(main_event_loop->listeners, child_listener) < 0) {
+        free(child_listener);
+        return -1;
+    }
 
     return 0;
 }
