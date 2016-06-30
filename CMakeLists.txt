@@ -11,6 +11,7 @@ set(init_SRCS
     src/interface.c
     src/mount.c
     src/unitmanager.c
+    src/ptrlist.c
     src/route.c
     src/service.c
     src/target.c
