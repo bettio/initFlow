@@ -6,3 +6,4 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif ()
 
 add_executable(bson_test ../src/bson.c ../src/utils.c bson_test.c)
+add_executable(ptrlist_test ../src/ptrlist.c ptrlist_test.c)
