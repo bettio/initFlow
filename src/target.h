@@ -44,7 +44,7 @@ Target *target_load(UnitManager *um, const char *path);
  *
  * @description destroy a target and free its allocated memory.
  */
-int target_destroy(Target *t);
+void target_destroy(Target *t);
 
 /**
  * @brief start all target units

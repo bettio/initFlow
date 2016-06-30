@@ -82,10 +82,9 @@ Target *target_load(UnitManager *um, const char *path)
     return t;
 }
 
-int target_destroy(Target *t)
+void target_destroy(Target *t)
 {
     free(t);
-    return 0;
 }
 
 void target_start_all(Target *t)
