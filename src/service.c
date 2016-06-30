@@ -101,7 +101,6 @@ int service_start(Unit *u)
     } else if (pid > 0) {
         unit_set_status(u, UNIT_STATUS_RUNNING);
         srv->pid = pid;
-        unit_ref((Unit *) srv);
         event_loop_add_child(pid, service_process_event, srv);
     } else {
         fprintf(stderr, "init: cannot fork: %s: ", srv->exec);

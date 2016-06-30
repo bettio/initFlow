@@ -53,14 +53,6 @@ void unit_constructor(Unit *u, const char *unit_path)
     u->status = UNIT_STATUS_INACTIVE;
 }
 
-void unit_ref(Unit *u)
-{
-}
-
-void unit_unref(Unit *u)
-{
-}
-
 int unit_get_status(const Unit *u)
 {
     return u->status;

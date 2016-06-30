@@ -75,7 +75,6 @@ Target *target_load(UnitManager *um, const char *path)
                 fprintf(stderr, "skipping unit %s\n", entry->d_name);
                 continue;
             }
-            unit_ref(u);
             target_append_unit(t, u);
         }
     }

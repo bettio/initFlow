@@ -55,16 +55,6 @@ struct Unit
 void unit_constructor(Unit *unit, const char *unit_path);
 
 /**
- * @brief increases Unit object reference counter.
- */
-void unit_ref(Unit *unit);
-
-/**
- * @brief decreases Unit object reference counter.
- */
-void unit_unref(Unit *unit);
-
-/**
  * @brief starts a Unit.
  */
 void unit_start(Unit *u);
