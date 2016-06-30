@@ -53,9 +53,6 @@ Unit *route_new(const char *route_path)
         return NULL;
     }
 
-    unit_constructor((Unit *) new_route, route_path);
-    new_route->parent_instance.type = UNIT_TYPE_ROUTE;
-
     unsigned int size;
     int fd;
     void *doc = map_file(route_path, O_RDONLY | O_CLOEXEC, &fd, &size);
@@ -64,6 +61,9 @@ Unit *route_new(const char *route_path)
         free(new_route);
         return NULL;
     }
+
+    unit_constructor((Unit *) new_route, route_path, doc);
+    new_route->parent_instance.type = UNIT_TYPE_ROUTE;
 
     uint8_t type;
     const void *value = bson_key_lookup("destination", doc, &type);

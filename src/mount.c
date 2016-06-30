@@ -47,9 +47,6 @@ Unit *mount_new(const char *mount_path)
         return NULL;
     }
 
-    unit_constructor((Unit *) new_mount, mount_path);
-    new_mount->parent_instance.type = UNIT_TYPE_MOUNT;
-
     unsigned int size;
     int fd;
     void *doc = map_file(mount_path, O_RDONLY | O_CLOEXEC, &fd, &size);
@@ -58,6 +55,9 @@ Unit *mount_new(const char *mount_path)
         free(new_mount);
         return NULL;
     }
+
+    unit_constructor((Unit *) new_mount, mount_path, doc);
+    new_mount->parent_instance.type = UNIT_TYPE_MOUNT;
 
     uint8_t type;
     const void *value = bson_key_lookup("what", doc, &type);

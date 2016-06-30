@@ -25,6 +25,8 @@
 #ifndef _UNIT_H_
 #define _UNIT_H_
 
+#include "ptrlist.h"
+
 #define UNIT_TYPE_NULL 0
 #define UNIT_TYPE_SERVICE 1
 #define UNIT_TYPE_MOUNT 2
@@ -40,9 +42,9 @@
 struct Unit
 {
     char *name;
-    void *doc;
     int type;
     int status;
+    PtrList *requires;
 } typedef Unit;
 
 /**
@@ -52,7 +54,7 @@ struct Unit
  * @param unit the pointer to the uninitialized Unit based object.
  * @param unit_path the path to the .unit BSON file.
  */
-void unit_constructor(Unit *unit, const char *unit_path);
+void unit_constructor(Unit *unit, const char *unit_path, void *doc);
 
 /**
  * @brief starts a Unit.

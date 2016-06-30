@@ -51,9 +51,6 @@ Unit *interface_new(const char *interface_path)
         return NULL;
     }
 
-    unit_constructor((Unit *) new_interface, interface_path);
-    new_interface->parent_instance.type = UNIT_TYPE_INTERFACE;
-
     unsigned int size;
     int fd;
     void *doc = map_file(interface_path, O_RDONLY | O_CLOEXEC, &fd, &size);
@@ -62,6 +59,9 @@ Unit *interface_new(const char *interface_path)
         free(new_interface);
         return NULL;
     }
+
+    unit_constructor((Unit *) new_interface, interface_path, doc);
+    new_interface->parent_instance.type = UNIT_TYPE_INTERFACE;
 
     uint8_t type;
     const void *value = bson_key_lookup("interface", doc, &type);

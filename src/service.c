@@ -57,9 +57,6 @@ Unit *service_new(const char *service_path)
     new_service->exit_status = 0;
     new_service->error_number = 0;
 
-    unit_constructor((Unit *) new_service, service_path);
-    new_service->parent_instance.type = UNIT_TYPE_SERVICE;
-
     unsigned int size;
     int fd;
     void *doc = map_file(service_path, O_RDONLY | O_CLOEXEC, &fd, &size);
@@ -68,6 +65,9 @@ Unit *service_new(const char *service_path)
         free(new_service);
         return NULL;
     }
+
+    unit_constructor((Unit *) new_service, service_path, doc);
+    new_service->parent_instance.type = UNIT_TYPE_SERVICE;
 
     uint8_t type;
     const void *value = bson_key_lookup("exec", doc, &type);

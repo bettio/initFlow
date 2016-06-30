@@ -19,6 +19,7 @@
 
 #include "unit.h"
 
+#include "bson.h"
 #include "interface.h"
 #include "mount.h"
 #include "route.h"
@@ -47,10 +48,17 @@ void unit_start(Unit *u)
     }
 }
 
-void unit_constructor(Unit *u, const char *unit_path)
+void unit_constructor(Unit *u, const char *unit_path, void *doc)
 {
     u->name = strdup(strrchr(unit_path, '/') + 1);
     u->status = UNIT_STATUS_INACTIVE;
+    u->requires = ptr_list_new();
+
+    uint8_t type;
+    const void *value = bson_key_lookup("where", doc, &type);
+    if (value && (type == TYPE_STRING)) {
+        ptr_list_append(u->requires, strdup(bson_value_to_string(value, NULL)));
+    }
 }
 
 int unit_get_status(const Unit *u)
