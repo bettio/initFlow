@@ -33,10 +33,15 @@
 #define UNIT_TYPE_INTERFACE 3
 #define UNIT_TYPE_ROUTE 4
 
+/** @brief unit is not running and it is not scheduled */
 #define UNIT_STATUS_INACTIVE 0
+/** @brief unit is going to be executed soon */
 #define UNIT_STATUS_SCHEDULED 1
+/** @brief unit is running */
 #define UNIT_STATUS_RUNNING 2
+/** @brief unit has terminated without errors */
 #define UNIT_STATUS_TERMINATED 3
+/** @brief unit has terminated due to some errors */
 #define UNIT_STATUS_FAILED 4
 
 struct Unit
