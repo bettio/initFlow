@@ -91,9 +91,8 @@ int service_start(Unit *u)
 
     pid_t pid = fork();
     if (!pid){
-        char *envp[] = { NULL };
         char *a[] = {(char *) srv->exec, NULL};
-        if (execve(srv->exec, a, envp)) {
+        if (execv(srv->exec, a)) {
             fprintf(stderr, "init: cannot execute: %s: ", srv->exec);
             perror("");
             _exit(EXIT_FAILURE);
