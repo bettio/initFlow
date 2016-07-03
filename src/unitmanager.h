@@ -44,4 +44,7 @@ UnitManager *unitmanager_init();
  */
 Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_name);
 
+
+void unitmanager_build_list(UnitManager *unitman);
+
 #endif

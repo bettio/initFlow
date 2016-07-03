@@ -33,12 +33,22 @@
 
 struct _UnitManager
 {
-    Unit *units[256];
+    PtrList *units_list;
 };
 
 UnitManager *unitmanager_init()
 {
-    return malloc(sizeof(UnitManager));
+    UnitManager *umanager = malloc(sizeof(UnitManager));
+    if (!umanager) {
+       return NULL;
+    }
+    umanager->units_list = ptr_list_new();
+    if (!umanager->units_list) {
+        free(umanager);
+        return NULL;
+    }
+
+    return umanager;
 }
 
 Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_path)
@@ -62,5 +72,61 @@ Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_path)
         return NULL;
     }
 
+    ptr_list_append(unitman->units_list, new_unit);
+
     return new_unit;
+}
+
+Unit *unitmanager_get_unit_by_name(UnitManager *unitman, const char *name)
+{
+    int count = ptr_list_count(unitman->units_list);
+
+    for (int i = 0; i < count; i++) {
+        Unit *u = ptr_list_at(unitman->units_list, i);
+        if (!strcmp(name, u->name)) {
+            return u;
+        }
+    }
+
+    return NULL;
+}
+
+#define NODE_CLEAN 0
+#define NODE_TEMPORARY_MARK 1
+#define NODE_PERMANENT_MARK 2
+
+void visit_nodes_and_build(UnitManager *unitman, PtrList *unit, PtrList *deps_list, Unit *u)
+{
+    if (u->dependency_status == NODE_TEMPORARY_MARK) {
+        fprintf(stderr, "Found circular dependency, giving up.\n");
+        abort();
+    } else if (u->dependency_status == NODE_CLEAN) {
+        u->dependency_status = NODE_TEMPORARY_MARK;
+        int deps_count = ptr_list_count(u->requires);
+        for (int i = 0; i < deps_count; i++) {
+            visit_nodes_and_build(unitman, unit, deps_list, unitmanager_get_unit_by_name(unitman, ptr_list_at(u->requires, i)));
+        }
+        u->dependency_status = NODE_PERMANENT_MARK;
+        ptr_list_append(deps_list, u);
+    }
+}
+
+PtrList *build_dependencies_list(UnitManager *unitman, PtrList *units)
+{
+    PtrList *deps_list = ptr_list_new();
+    int count = ptr_list_count(units);
+
+    for (int i = 0; i < count; i++) {
+        Unit *u = ptr_list_at(units, i);
+        if (u->dependency_status == NODE_CLEAN) {
+            visit_nodes_and_build(unitman, units, deps_list, u);
+        }
+    }
+
+    return deps_list;
+}
+
+void unitmanager_build_list(UnitManager *unitman)
+{
+    build_dependencies_list(unitman, unitman->units_list);
 }

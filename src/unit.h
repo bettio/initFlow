@@ -49,6 +49,7 @@ struct Unit
     char *name;
     int type;
     int status;
+    int dependency_status;
     PtrList *requires;
 } typedef Unit;
 

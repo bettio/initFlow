@@ -53,9 +53,10 @@ void unit_constructor(Unit *u, const char *unit_path, void *doc)
     u->name = strdup(strrchr(unit_path, '/') + 1);
     u->status = UNIT_STATUS_INACTIVE;
     u->requires = ptr_list_new();
+    u->dependency_status = 0;
 
     uint8_t type;
-    const void *value = bson_key_lookup("where", doc, &type);
+    const void *value = bson_key_lookup("requires", doc, &type);
     if (value && (type == TYPE_STRING)) {
         ptr_list_append(u->requires, strdup(bson_value_to_string(value, NULL)));
     }
