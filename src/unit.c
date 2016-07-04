@@ -24,12 +24,18 @@
 #include "mount.h"
 #include "route.h"
 #include "service.h"
+#include "target.h"
 
 #include <string.h>
+#include <stdio.h>
 
 void unit_start(Unit *u)
 {
     switch (u->type) {
+        case UNIT_TYPE_TARGET:
+            target_start(u);
+        break;
+
         case UNIT_TYPE_SERVICE:
             service_start(u);
         break;

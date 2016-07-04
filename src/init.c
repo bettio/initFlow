@@ -39,13 +39,8 @@ int main(int argc, char **argv, char **envp)
         return EXIT_FAILURE;
     }
 
-    Target *target = target_load(unitman, SYSTEM_START_TARGET_PATH);
-    if (!target) {
-        fprintf(stderr, "init: failed to load target: %s.\n", SYSTEM_START_TARGET_PATH);
-        return EXIT_FAILURE;
-    }
-
-    target_start_all(target);
+    unitmanager_loadunit(unitman, "system/targets/system-start.target");
+    unitmanager_start_all(unitmanager_build_dependencies_list(unitman));
 
     return event_loop_run(loop);
 }

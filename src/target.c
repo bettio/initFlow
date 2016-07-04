@@ -22,6 +22,15 @@
 #include "unitmanager.h"
 #include "utils.h"
 
+#include <fcntl.h>
+#include <sys/mount.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,35 +40,43 @@
 
 struct _Target
 {
-    int units_count;
-    Unit *units[256];
+    Unit parent_instance;
 };
 
 static int check_is_unit_filename(const char *filename)
 {
-    return string_ends_with(filename, ".service") ||
+    return string_ends_with(filename, ".target") ||
+           string_ends_with(filename, ".service") ||
            string_ends_with(filename, ".interface") ||
            string_ends_with(filename, ".route") ||
            string_ends_with(filename, ".mount");
 }
 
-void target_append_unit(Target *t, Unit *u)
+Unit *target_new(const char *target_path, UnitManager *um)
 {
-    t->units[t->units_count] = u;
-    t->units_count++;
-}
-
-Target *target_load(UnitManager *um, const char *path)
-{
-    Target *t = malloc(sizeof(Target));
-    if (!t) {
+    Target *new_target = malloc(sizeof(Target));
+    if (!new_target) {
         return NULL;
     }
-    t->units_count = 0;
 
-    DIR *targetDir = opendir(path);
+    unsigned int size;
+    int fd;
+    void *doc = map_file(target_path, O_RDONLY | O_CLOEXEC, &fd, &size);
+
+    if (!doc && (fd >= 0)) {
+        free(new_target);
+        return NULL;
+    }
+
+    unit_constructor((Unit *) new_target, target_path, doc);
+    new_target->parent_instance.type = UNIT_TYPE_TARGET;
+
+    char requiresPath[256];
+    sprintf(requiresPath, "%s.requires/", target_path);
+
+    DIR *targetDir = opendir(requiresPath);
     if (!targetDir) {
-        printf("init: failed to open %s directory.\n", path);
+        printf("init: failed to open %s directory.\n", requiresPath);
         return NULL;
     }
     struct dirent dirEntry;
@@ -68,18 +85,21 @@ Target *target_load(UnitManager *um, const char *path)
     while ((readdir_r(targetDir, &dirEntry, &entry) == 0) && (entry != NULL)) {
         if (check_is_unit_filename(entry->d_name)) {
             char fullpath[256];
-            strncpy(fullpath, path, 256);
+            strncpy(fullpath, requiresPath, 256);
             strncat(fullpath, entry->d_name, 256);
             Unit *u = unitmanager_loadunit(um, fullpath);
             if (!u) {
                 fprintf(stderr, "skipping unit %s\n", entry->d_name);
                 continue;
             }
-            target_append_unit(t, u);
+            ptr_list_append(new_target->parent_instance.requires, entry->d_name);
         }
     }
 
-    return t;
+    return (Unit *) new_target;
+}
+
+    return (Unit *) new_target;
 }
 
 void target_destroy(Target *t)
@@ -87,10 +107,7 @@ void target_destroy(Target *t)
     free(t);
 }
 
-void target_start_all(Target *t)
+void target_start(Unit *u)
 {
-    for (int i = 0; i < t->units_count; i++) {
-        unit_set_status(t->units[i], UNIT_STATUS_SCHEDULED);
-        unit_start(t->units[i]);
-    }
+    printf("started target: %s\n", u->name);
 }

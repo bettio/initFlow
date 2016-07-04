@@ -26,10 +26,15 @@
 #include "service.h"
 #include "unit.h"
 #include "utils.h"
+#include "target.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#define NODE_CLEAN 0
+#define NODE_TEMPORARY_MARK 1
+#define NODE_PERMANENT_MARK 2
 
 struct _UnitManager
 {
@@ -56,7 +61,10 @@ Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_path)
     DEBUG_MSG("loading unit: %s\n", unit_path);
     Unit *new_unit;
 
-    if (string_ends_with(unit_path, ".service")) {
+    if (string_ends_with(unit_path, ".target")) {
+        new_unit = target_new(unit_path, unitman);
+
+    } else if (string_ends_with(unit_path, ".service")) {
         new_unit = service_new(unit_path);
 
     } else if (string_ends_with(unit_path, ".mount")) {
@@ -91,10 +99,6 @@ Unit *unitmanager_get_unit_by_name(UnitManager *unitman, const char *name)
     return NULL;
 }
 
-#define NODE_CLEAN 0
-#define NODE_TEMPORARY_MARK 1
-#define NODE_PERMANENT_MARK 2
-
 void visit_nodes_and_build(UnitManager *unitman, PtrList *unit, PtrList *deps_list, Unit *u)
 {
     if (u->dependency_status == NODE_TEMPORARY_MARK) {
@@ -111,7 +115,7 @@ void visit_nodes_and_build(UnitManager *unitman, PtrList *unit, PtrList *deps_li
     }
 }
 
-PtrList *build_dependencies_list(UnitManager *unitman, PtrList *units)
+static PtrList *build_dependencies_list(UnitManager *unitman, PtrList *units)
 {
     PtrList *deps_list = ptr_list_new();
     int count = ptr_list_count(units);
@@ -126,7 +130,18 @@ PtrList *build_dependencies_list(UnitManager *unitman, PtrList *units)
     return deps_list;
 }
 
-void unitmanager_build_list(UnitManager *unitman)
+PtrList *unitmanager_build_dependencies_list(UnitManager *unitman)
 {
-    build_dependencies_list(unitman, unitman->units_list);
+    return build_dependencies_list(unitman, unitman->units_list);
+}
+
+void unitmanager_start_all(PtrList *list)
+{
+    int units_count = ptr_list_count(list);
+
+    for (int i = 0; i < units_count; i++) {
+        Unit *u = ptr_list_at(list, i);
+        unit_set_status(u, UNIT_STATUS_SCHEDULED);
+        unit_start(u);
+    }
 }

@@ -28,10 +28,11 @@
 #include "ptrlist.h"
 
 #define UNIT_TYPE_NULL 0
-#define UNIT_TYPE_SERVICE 1
-#define UNIT_TYPE_MOUNT 2
-#define UNIT_TYPE_INTERFACE 3
-#define UNIT_TYPE_ROUTE 4
+#define UNIT_TYPE_TARGET 1
+#define UNIT_TYPE_SERVICE 2
+#define UNIT_TYPE_MOUNT 3
+#define UNIT_TYPE_INTERFACE 4
+#define UNIT_TYPE_ROUTE 5
 
 /** @brief unit is not running and it is not scheduled */
 #define UNIT_STATUS_INACTIVE 0

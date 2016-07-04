@@ -30,14 +30,12 @@
 struct _Target typedef Target;
 
 /**
- * @brief load a target.
+ * @brief instantiate a new Target unit.
  *
- * @description load a target and all the associated units.
+ * @description read a .target unit and instantiate a new Target object.
  *
- * @param um the UnitManager.
- * @param path to the target wants directory.
  */
-Target *target_load(UnitManager *um, const char *path);
+Unit *target_new(const char *target_path, UnitManager *um);
 
 /**
  * @brief destory a target.
@@ -47,12 +45,12 @@ Target *target_load(UnitManager *um, const char *path);
 void target_destroy(Target *t);
 
 /**
- * @brief start all target units
+ * @brief start the target.
  *
- * @description start all required units for a certain target.
+ * @description start the target pointed by u.
  *
- * @param t target that should be started.
+ * @param u the target that should be started.
  */
-void target_start_all(Target *t);
+void target_start(Unit *u);
 
 #endif

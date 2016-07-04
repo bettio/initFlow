@@ -26,6 +26,7 @@
 #define _UNITMANAGER_H_
 
 #include "unit.h"
+#include "ptrlist.h"
 
 struct _UnitManager typedef UnitManager;
 
@@ -45,6 +46,8 @@ UnitManager *unitmanager_init();
 Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_name);
 
 
-void unitmanager_build_list(UnitManager *unitman);
+PtrList *unitmanager_build_dependencies_list(UnitManager *unitman);
+
+void unitmanager_start_all(PtrList *list);
 
 #endif
