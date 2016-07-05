@@ -22,6 +22,15 @@
 #include "bson.h"
 #include "utils.h"
 
+#include <fcntl.h>
+#include <sys/mount.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+
+
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <net/if.h>
@@ -77,6 +86,9 @@ Unit *route_new(const char *route_path)
 
     value = bson_key_lookup("interface", doc, &type);
     new_route->interface = strdup(bson_value_to_string(value, NULL));
+
+    munmap(doc, size);
+    close(fd);
 
     return (Unit *) new_route;
 }

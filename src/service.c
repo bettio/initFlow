@@ -80,6 +80,10 @@ Unit *service_new(const char *service_path)
 
     value = bson_key_lookup("restart", doc, &type);
     new_service->restart = value && (strcmp(bson_value_to_string(value, NULL), "always") == 0);
+
+    munmap(doc, size);
+    close(fd);
+
     return (Unit *) new_service;
 }
 

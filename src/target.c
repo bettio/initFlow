@@ -95,9 +95,10 @@ Unit *target_new(const char *target_path, UnitManager *um)
             ptr_list_append(new_target->parent_instance.requires, entry->d_name);
         }
     }
+    closedir(targetDir);
 
-    return (Unit *) new_target;
-}
+    munmap(doc, size);
+    close(fd);
 
     return (Unit *) new_target;
 }
