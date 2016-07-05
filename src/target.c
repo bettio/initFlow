@@ -93,7 +93,7 @@ Unit *target_new(const char *target_path, UnitManager *um)
                 fprintf(stderr, "skipping unit %s\n", entry->d_name);
                 continue;
             }
-            ptr_list_append(new_target->parent_instance.requires, entry->d_name);
+            ptr_list_append(new_target->parent_instance.requires, u->name);
         }
     }
     closedir(targetDir);
