@@ -58,6 +58,13 @@ UnitManager *unitmanager_init()
 
 Unit *unitmanager_loadunit(UnitManager *unitman, const char *unit_path)
 {
+    Unit *u = unitmanager_get_unit_by_name(unitman, strrchr(unit_path, '/') + 1);
+    if (u) {
+        /* already loaded unit */
+        DEBUG_MSG("%s has been already loaded\n", u->name);
+        return u;
+    }
+
     DEBUG_MSG("loading unit: %s\n", unit_path);
     Unit *new_unit;
 

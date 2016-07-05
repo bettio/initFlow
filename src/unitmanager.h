@@ -50,4 +50,6 @@ PtrList *unitmanager_build_dependencies_list(UnitManager *unitman);
 
 void unitmanager_start_all(PtrList *list);
 
+Unit *unitmanager_get_unit_by_name(UnitManager *unitman, const char *name);
+
 #endif

@@ -19,6 +19,7 @@
 
 #include "target.h"
 
+#include "config.h"
 #include "unitmanager.h"
 #include "utils.h"
 
@@ -72,7 +73,7 @@ Unit *target_new(const char *target_path, UnitManager *um)
     new_target->parent_instance.type = UNIT_TYPE_TARGET;
 
     char requiresPath[256];
-    sprintf(requiresPath, "%s.requires/", target_path);
+    sprintf(requiresPath, SYSTEM_TARGETS_PATH "%s.requires/", new_target->parent_instance.name);
 
     DIR *targetDir = opendir(requiresPath);
     if (!targetDir) {

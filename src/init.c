@@ -17,15 +17,13 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
+#include "config.h"
 #include "eventloop.h"
 #include "unitmanager.h"
 #include "target.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#define BASE_PREFIX "/lib/"
-#define SYSTEM_START_TARGET_PATH BASE_PREFIX "system/targets/system-start.target.requires/"
 
 int main(int argc, char **argv, char **envp)
 {
@@ -39,7 +37,7 @@ int main(int argc, char **argv, char **envp)
         return EXIT_FAILURE;
     }
 
-    unitmanager_loadunit(unitman, "system/targets/system-start.target");
+    unitmanager_loadunit(unitman, SYSTEM_TARGETS_PATH DEFAULT_BOOT_TARGET);
     unitmanager_start_all(unitmanager_build_dependencies_list(unitman));
 
     return event_loop_run(loop);
