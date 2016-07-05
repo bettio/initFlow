@@ -58,3 +58,14 @@ void *map_file(const char *name, int flags, int *fileFD, unsigned int *fileSize)
 
     return mmap(NULL, fileStats.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 }
+
+
+const char *file_name(const char *path)
+{
+   const char *found_sep = strrchr(path, '/');
+   if (found_sep) {
+       return found_sep + 1;
+   } else {
+       return path;
+   }
+}

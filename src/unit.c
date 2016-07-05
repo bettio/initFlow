@@ -25,6 +25,7 @@
 #include "route.h"
 #include "service.h"
 #include "target.h"
+#include "utils.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -56,7 +57,7 @@ void unit_start(Unit *u)
 
 void unit_constructor(Unit *u, const char *unit_path, void *doc)
 {
-    u->name = strdup(strrchr(unit_path, '/') + 1);
+    u->name = strdup(file_name(unit_path));
     u->status = UNIT_STATUS_INACTIVE;
     u->requires = ptr_list_new();
     u->dependency_status = 0;

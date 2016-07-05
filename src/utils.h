@@ -61,4 +61,6 @@ int string_ends_with(const char *string, const char *end);
  */
 void *map_file(const char *name, int flags, int *fileFD, unsigned int *fileSize);
 
+const char *file_name(const char *path);
+
 #endif
