@@ -115,10 +115,17 @@ void visit_nodes_and_build(UnitManager *unitman, PtrList *unit, PtrList *deps_li
         u->dependency_status = NODE_TEMPORARY_MARK;
         int deps_count = ptr_list_count(u->requires);
         for (int i = 0; i < deps_count; i++) {
-            visit_nodes_and_build(unitman, unit, deps_list, unitmanager_get_unit_by_name(unitman, ptr_list_at(u->requires, i)));
+            const char *required_unit_name = ptr_list_at(u->requires, i);
+            Unit *required_unit = unitmanager_get_unit_by_name(unitman, required_unit_name);
+            if (!u) {
+                fprintf(stderr, "init: cannot find required unit: %s. cannot boot.\n", required_unit_name);
+                abort();
+            }
+            visit_nodes_and_build(unitman, unit, deps_list, required_unit);
         }
         u->dependency_status = NODE_PERMANENT_MARK;
         ptr_list_append(deps_list, u);
+        DEBUG_MSG("dep: %s\n", u->name);
     }
 }
 
