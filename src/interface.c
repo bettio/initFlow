@@ -97,7 +97,7 @@ int interface_start(Unit *u)
 {
     Interface *iface = (Interface *) u;
 
-    printf("Configuring network interface: %s", iface->network_interface);
+    printf("Configuring network interface: %s\n", iface->network_interface);
 
     int sockfd = socket(PF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) {
@@ -141,7 +141,6 @@ int interface_start(Unit *u)
         }
     }
     unit_set_status(u, UNIT_STATUS_RUNNING);
-    printf(" [ OK ]\n");
 
     return 0;
 }
